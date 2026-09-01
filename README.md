@@ -39,6 +39,7 @@ config you add. Themes installed from a git repo are restricted to colour.
 | `icons.theme` | GTK icon theme to pair with it. |
 | `backgrounds/` | Wallpapers, cycled with `omarchy theme bg next`. |
 | `tools/` | Regenerates `backgrounds/` from vector primitives. |
+| `shell-plugin/` | A cloned Omarchy bar (`tron.bar`) that glows the hovered module. Not part of the theme — installed separately, see below. |
 
 ## Palette
 
@@ -78,6 +79,46 @@ In the shell, hover is cyan at 75% border alpha and keyboard/tab focus goes one
 louder — 2px, fully opaque `#8df2ff`. Popups, notifications, and the lock input
 already track the Hyprland active-border gradient, so they pick up the
 cyan-to-orange edge for free.
+
+## Bar hover glow
+
+`shell.toml` has no token for it: Omarchy's `WidgetButton` shows a tooltip on
+hover and nothing else, so a bar icon that lights up needs QML, not colour.
+`shell-plugin/` is a clone of the built-in bar with that one behaviour added.
+
+```bash
+ln -sfn ~/Work/omarchy-tron/shell-plugin ~/.config/omarchy/plugins/tron.bar
+omarchy plugin enable tron.bar
+omarchy restart shell
+```
+
+Back to the stock bar with `omarchy plugin enable omarchy.bar`.
+
+Inside, `ModuleSlot` gains a `ShaderEffectSource` copy of the module and two
+`MultiEffect` passes over it — a tight core that keeps the glyph shape and a
+wide halo bleeding into the bar — both tinted `Color.accent` and faded in over
+160ms on `slot.hovered`. It samples through a `ShaderEffectSource` rather than
+the item's own layer because a `MultiEffect` consumes the layer it reads:
+sourcing the item directly renders the blur *instead of* the module, and the
+bar loses its sharp glyphs. The texture goes `live` only while lit, so an idle
+bar is not re-rendering one per module.
+
+Two things to know about cloning a bar:
+
+- **Upstream `Bar.qml` cannot be cloned as-is.** `shell.qml` builds the
+  built-in bar from an inline `Component` that sets `omarchyPath`,
+  `barWidgetRegistry`, and `barConfig` at construction, but loads a *plugin*
+  bar with `Loader { source: <url> }` and injects them from `onLoaded` — after
+  construction. The three `required property` declarations are therefore never
+  initialized, the Loader errors, and the fallback silently reverts to the
+  built-in bar without saying why (`errorString` is not defined in that scope,
+  so the handler throws before it can log). This clone drops `required` and
+  gives them defaults.
+- **Edits need `omarchy restart shell`.** Plugin hot-reload does not notice
+  writes through the symlink.
+
+Cloning pins ~1800 lines of `Bar.qml` at the version it was copied from; it
+will not pick up upstream bar fixes until re-cloned.
 
 ## Backgrounds
 
