@@ -39,7 +39,7 @@ config you add. Themes installed from a git repo are restricted to colour.
 | `icons.theme` | GTK icon theme to pair with it. |
 | `backgrounds/` | Wallpapers, cycled with `omarchy theme bg next`. |
 | `tools/` | Regenerates `backgrounds/` from vector primitives. |
-| `preview.png` | Submission screenshot, 1800x1058. |
+| `preview.png` | Submission screenshot and theme-switcher preview, 1800x1012 — the 16:9 size Omarchy's own themes use. |
 | `gtk.css` | GTK4 hover glow for Nautilus and other GTK apps. Installed by the hook below, not by Omarchy. |
 | `hooks/` | `theme-set` hook that puts `gtk.css` where GTK4 reads it. |
 | `shell-plugin/` | A cloned Omarchy bar (`tron.bar`) that glows the hovered module. Not part of the theme — installed separately, see below. |
