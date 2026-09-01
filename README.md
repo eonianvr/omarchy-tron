@@ -169,6 +169,30 @@ changing a colour in `tools/gen_mvg.py`:
 2. **circuits** — board traces with a few hot orange runs
 3. **identity-disc** — concentric rings on black
 
+## Installing from a repo drops the window glow
+
+`omarchy theme install` clones into `~/.config/omarchy/themes` and then refuses
+to stage anything from that clone that runs code — every `*.lua` included,
+because Hyprland loads a theme's `hyprland.lua` at login. So a Tron installed
+from this repo keeps the cyan-to-orange gradient border (that comes from
+`hyprland_active_border` in `colors.toml`, which Omarchy renders into its own
+generated `hyprland.lua`) but loses the shadow halo, the inactive-window
+dimming, and the groupbar colors.
+
+`shell.controls.toml` and `gtk.css` are colour, not code, so both survive the
+clone. `shell-plugin/` and `hooks/` are not part of the theme format at all —
+they are installed by hand, see above.
+
+To get the window glow, symlink the repo as a hand-written theme instead:
+
+```bash
+ln -sfn ~/Work/omarchy-tron ~/.config/omarchy/themes/tron
+omarchy theme set tron
+```
+
 ## License
 
-MIT
+MIT — see `LICENSE`.
+
+`shell-plugin/` is a fork of Omarchy's own bar plugin and carries its MIT
+notice in `shell-plugin/NOTICE`.
