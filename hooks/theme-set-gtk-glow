@@ -1,0 +1,28 @@
+#!/bin/bash
+# Omarchy theme-set hook: install the newly applied theme's gtk.css, if it
+# ships one, into ~/.config/gtk-4.0/gtk.css — the only place GTK4 apps read a
+# user stylesheet from. Omarchy has no gtk.css template, so a theme that wants
+# to reach GTK apps has to put the file there itself.
+#
+# Install with:  omarchy hook install theme-set hooks/theme-set-gtk-glow
+# The install copies the script, so re-run it after editing this file.
+set -euo pipefail
+
+theme_css="$HOME/.local/state/omarchy/current/theme/gtk.css"
+target_dir="$HOME/.config/gtk-4.0"
+target="$target_dir/gtk.css"
+marker="/* managed by the omarchy-tron theme-set hook */"
+
+mkdir -p "$target_dir"
+
+# Never touch a gtk.css this hook did not write: a hand-written one is the
+# user's, and silently replacing it on every theme change would be theft.
+if [[ -f $target ]] && ! head -1 "$target" | grep -qF -- "$marker"; then
+  exit 0
+fi
+
+if [[ -f $theme_css ]]; then
+  { echo "$marker"; cat "$theme_css"; } >"$target"
+else
+  rm -f "$target"
+fi

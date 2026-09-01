@@ -1,0 +1,40 @@
+/* Tron — GTK4. Installed to ~/.config/gtk-4.0/gtk.css by the theme-set hook in
+ * hooks/theme-set-gtk-glow, and removed again when you switch to a theme that
+ * ships no gtk.css of its own.
+ *
+ * Same idea as the bar and the focused window: the thing under the pointer
+ * looks powered on. GTK has no glow primitive either, but it does have the
+ * CSS `filter` property (GTK 4.2+), and drop-shadow with zero offset is a
+ * halo. Two of them stacked — a tight one that holds the icon's shape and a
+ * wide one that bleeds — read as light rather than as a shadow.
+ */
+
+@define-color tron_accent #5ee7ff;
+
+/* gridview > child is a GtkGridView item: Nautilus' icon view, the wallpaper
+ * grid in GNOME Settings, the emoji chooser. columnview/listview rows cover
+ * Nautilus' list view and its sidebar.
+ */
+gridview > child:hover,
+columnview row:hover,
+listview > row:hover {
+  filter: drop-shadow(0 0 3px alpha(@tron_accent, 0.95))
+          drop-shadow(0 0 10px alpha(@tron_accent, 0.5));
+  background-color: alpha(@tron_accent, 0.08);
+  transition: background-color 150ms ease-out;
+}
+
+/* Keyboard focus should be at least as loud as the pointer. */
+gridview > child:focus-within,
+columnview row:focus-within,
+listview > row:focus-within {
+  filter: drop-shadow(0 0 3px alpha(@tron_accent, 1.0))
+          drop-shadow(0 0 12px alpha(@tron_accent, 0.6));
+}
+
+/* Selection picks up the accent instead of Adwaita's blue. */
+gridview > child:selected,
+columnview row:selected,
+listview > row:selected {
+  background-color: alpha(@tron_accent, 0.22);
+}

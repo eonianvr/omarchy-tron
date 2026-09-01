@@ -39,6 +39,8 @@ config you add. Themes installed from a git repo are restricted to colour.
 | `icons.theme` | GTK icon theme to pair with it. |
 | `backgrounds/` | Wallpapers, cycled with `omarchy theme bg next`. |
 | `tools/` | Regenerates `backgrounds/` from vector primitives. |
+| `gtk.css` | GTK4 hover glow for Nautilus and other GTK apps. Installed by the hook below, not by Omarchy. |
+| `hooks/` | `theme-set` hook that puts `gtk.css` where GTK4 reads it. |
 | `shell-plugin/` | A cloned Omarchy bar (`tron.bar`) that glows the hovered module. Not part of the theme — installed separately, see below. |
 
 ## Palette
@@ -119,6 +121,35 @@ Two things to know about cloning a bar:
 
 Cloning pins ~1800 lines of `Bar.qml` at the version it was copied from; it
 will not pick up upstream bar fixes until re-cloned.
+
+## File manager hover glow
+
+GTK4 has a real `filter` property (4.2+), so a zero-offset `drop-shadow` is a
+glow — no compositing tricks needed. Two stacked, a tight one that holds the
+icon's shape and a wide one that bleeds, on `gridview > child:hover` (Nautilus'
+icon view) plus `columnview row:hover` and `listview > row:hover` (its list
+view and sidebar).
+
+GTK4 reads exactly one user stylesheet, `~/.config/gtk-4.0/gtk.css`, and
+Omarchy has no template for it — `omarchy-theme-set-gnome` only flips
+Adwaita-dark and the icon theme. So the theme ships `gtk.css` and a `theme-set`
+hook copies it into place on every theme change:
+
+```bash
+omarchy hook install theme-set hooks/theme-set-gtk-glow
+omarchy theme set tron
+```
+
+The hook writes a marker as the first line and refuses to touch a `gtk.css`
+that does not carry it, so a hand-written one survives. Switching to a theme
+that ships no `gtk.css` removes the file again.
+
+Two caveats:
+
+- **GTK reads `gtk.css` once, at app startup.** Editing it, or changing themes,
+  does nothing to a running Nautilus — quit and reopen it.
+- `omarchy hook install` *copies* the script. Re-run it after editing
+  `hooks/theme-set-gtk-glow`.
 
 ## Backgrounds
 
