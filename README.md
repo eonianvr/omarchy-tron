@@ -63,10 +63,14 @@ ones fall back to a dim `#11384a`.
 ## Glow
 
 Hyprland has no glow primitive, so `hyprland.lua` builds one out of the drop
-shadow: `range = 44` with `render_power = 2` (a slower falloff than the default
-3) spreads accent cyan off the window edge instead of hugging it, and
-`color_inactive` is fully transparent so only the focused window carries it.
-Unfocused windows are dimmed 20% on top of that.
+shadow: `range = 26` of accent cyan at 44% alpha, with `color_inactive` fully
+transparent so only the focused window carries it. Unfocused windows are dimmed
+14% on top of that.
+
+`render_power` stays at Hyprland's default 3 deliberately. Dropping it to 2
+spreads the light much further from the frame, which is too much here — with
+`window-no-gaps` on there is nowhere outside the window for a wide halo to go,
+so it bleeds inward over the content instead.
 
 **This needs gaps and borders to be visible.** Omarchy's `window-no-gaps`
 toggle sets `gaps_out`, `gaps_in`, and `border_size` to 0, and it loads after

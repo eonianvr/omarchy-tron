@@ -21,22 +21,23 @@ hl.config({
   },
 
   decoration = {
-    -- range is how far the halo reaches; render_power 2 is a slower falloff
-    -- than Hyprland's default 3, which spreads the light instead of hugging
-    -- the frame.
+    -- range is how far the halo reaches. Hyprland's default render_power of 3
+    -- falls off fast enough to keep the light on the frame instead of washing
+    -- into the window, which matters here: with no gaps between windows the
+    -- shadow has nowhere outside to go and bleeds inward over the content.
     shadow = {
       enabled = true,
-      range = 44,
-      render_power = 2,
+      range = 26,
+      render_power = 3,
       sharp = false,
       scale = 1.0,
-      color = "rgba(5ee7ffb4)",
+      color = "rgba(5ee7ff70)",
       color_inactive = "rgba(00000000)",
     },
 
     -- Unfocused windows fall back into the Grid so the lit one stands out.
     dim_inactive = true,
-    dim_strength = 0.2,
+    dim_strength = 0.14,
   },
 
   group = {
