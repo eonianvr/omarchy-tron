@@ -63,7 +63,7 @@ ones fall back to a dim `#11384a`.
 ## Glow
 
 Hyprland has no glow primitive, so `hyprland.lua` builds one out of the drop
-shadow: `range = 26` of accent cyan at 44% alpha, with `color_inactive` fully
+shadow: `range = 26` of accent cyan at 28% alpha, with `color_inactive` fully
 transparent so only the focused window carries it. Unfocused windows are dimmed
 14% on top of that.
 

@@ -31,7 +31,7 @@ hl.config({
       render_power = 3,
       sharp = false,
       scale = 1.0,
-      color = "rgba(5ee7ff70)",
+      color = "rgba(5ee7ff48)",
       color_inactive = "rgba(00000000)",
     },
 
