@@ -33,7 +33,9 @@ config you add. Themes installed from a git repo are restricted to colour.
 
 | File | Purpose |
 |------|---------|
-| `colors.toml` | The whole palette. Omarchy renders Alacritty, Ghostty, Kitty, foot, Hyprland, btop, Neovim, Chromium, the shell, and the lock screen from it. |
+| `colors.toml` | The whole palette. Omarchy renders Alacritty, Ghostty, Kitty, foot, btop, Neovim, Chromium, the shell, and the lock screen from it. |
+| `hyprland.lua` | Window glow: thick gradient borders, the accent-cyan halo on the focused window, dimming for everything else. Replaces the file Omarchy would generate. |
+| `shell.controls.toml` | Replaces just the `[controls]` section of the generated `shell.toml`, so hover/focus/selected chrome in the bar and menus lights up. |
 | `icons.theme` | GTK icon theme to pair with it. |
 | `backgrounds/` | Wallpapers, cycled with `omarchy theme bg next`. |
 | `tools/` | Regenerates `backgrounds/` from vector primitives. |
@@ -42,18 +44,40 @@ config you add. Themes installed from a git repo are restricted to colour.
 
 | Role | Colour | |
 |------|--------|--|
-| accent / cyan | `#4dd7f5` | the Grid |
+| accent / cyan | `#5ee7ff` | the Grid |
 | orange | `#ff9f1c` | Clu |
 | background | `#050b0f` | |
-| foreground | `#cfeff8` | |
+| foreground | `#d6f4fc` | |
 | red | `#ff4d6d` | |
 | yellow | `#ffc93c` | |
 | green | `#3ff0a0` | |
-| blue | `#2f9fff` | |
+| blue | `#3aa9ff` | |
 | magenta | `#b06dff` | |
 
-Active window borders run a 45° cyan-to-orange gradient; inactive ones fall
-back to the dim `#123a47` selection colour.
+Active window borders run a 45° cyan-to-orange gradient at full alpha; inactive
+ones fall back to a dim `#11384a`.
+
+## Glow
+
+Hyprland has no glow primitive, so `hyprland.lua` builds one out of the drop
+shadow: `range = 44` with `render_power = 2` (a slower falloff than the default
+3) spreads accent cyan off the window edge instead of hugging it, and
+`color_inactive` is fully transparent so only the focused window carries it.
+Unfocused windows are dimmed 20% on top of that.
+
+**This needs gaps and borders to be visible.** Omarchy's `window-no-gaps`
+toggle sets `gaps_out`, `gaps_in`, and `border_size` to 0, and it loads after
+the theme, so it wins — the halo has nowhere to render and the gradient border
+has no width. Turn it off with `SUPER + SHIFT + BACKSPACE`, or:
+
+```bash
+omarchy-hyprland-toggle window-no-gaps off
+```
+
+In the shell, hover is cyan at 75% border alpha and keyboard/tab focus goes one
+louder — 2px, fully opaque `#8df2ff`. Popups, notifications, and the lock input
+already track the Hyprland active-border gradient, so they pick up the
+cyan-to-orange edge for free.
 
 ## Backgrounds
 

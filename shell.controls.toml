@@ -1,0 +1,29 @@
+[controls]
+# Idle chrome stays quiet; every "you are touching this" state lights up cyan.
+normal-color        = "#cfeff8"
+normal-fill-alpha   = 0.04
+normal-border       = "#cfeff8"
+normal-border-width = 1
+normal-border-alpha = 0.28
+
+hover-cursor-color        = "#5ee7ff"
+hover-cursor-fill-alpha   = 0.14
+hover-cursor-border       = "#5ee7ff"
+hover-cursor-border-width = 1
+hover-cursor-border-alpha = 0.75
+
+# Focus deliberately outshouts hover: two-pixel, fully opaque accent border.
+focus-color        = "#8df2ff"
+focus-fill-alpha   = 0.18
+focus-border       = "#8df2ff"
+focus-border-width = 2
+focus-border-alpha = 1.0
+
+selected-color        = "#8df2ff"
+selected-fill-alpha   = 0.24
+selected-border       = "#5ee7ff"
+selected-border-width = 1
+selected-border-alpha = 0.9
+
+pressed-fill-alpha   = 0.32
+selection-fill-alpha = 0.45
