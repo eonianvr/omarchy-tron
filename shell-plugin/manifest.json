@@ -3,7 +3,7 @@
   "id": "tron.bar",
   "name": "Tron Bar",
   "version": "1.0.0",
-  "author": "Omarchy",
+  "author": "eonianvr",
   "description": "Status bar with widgets, plus an accent glow under the hovered module",
   "kinds": [
     "bar"

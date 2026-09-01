@@ -8,7 +8,7 @@ single orange line for the programs that went rogue.
 ## Install
 
 ```bash
-omarchy theme install https://github.com/<you>/omarchy-tron.git
+omarchy theme install https://github.com/eonianvr/omarchy-tron.git
 omarchy theme set tron
 ```
 
